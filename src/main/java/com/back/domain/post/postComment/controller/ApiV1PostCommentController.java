@@ -50,7 +50,7 @@ public class ApiV1PostCommentController {
 
     @GetMapping("/{id}/delete")
     @Transactional(readOnly = true)
-    public Map<String, Object> delete(
+    public RsData delete(
             @PathVariable int postId,
             @PathVariable int id
     ){
@@ -58,10 +58,9 @@ public class ApiV1PostCommentController {
         PostComment postComment = post.findCommentById(id).get();
         postService.deleteComment(post, postComment);
 
-        Map<String, Object> rsData = new LinkedHashMap<>();
-        rsData.put("resultCode", "200-1");
-        rsData.put("msg", "%d번 댓글이 삭제되었습니다.".formatted(postComment.getId()));
-
-        return rsData;
+        return new RsData(
+                "200-1",
+                "댓글이 삭제되었습니다."
+        );
     }
 }
